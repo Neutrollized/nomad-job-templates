@@ -7,14 +7,17 @@ Wait!! How does that differ from setting a static port in the `resources` stanza
 
 #### scenario 1
 - dynamic network port in `resources` stanza
+
 i.e. redis.service.consul --> [Nomad worker IP]:[some high port number]
 
 #### scenario 3
 - static network port (6379) in `resources` stanza
+
 i.e. redis.service.consul --> [Nomad worker IP]:6379
 
 #### scenario 3
 - dynamic network port in `resources` stanza + `address_mode = "driver"`
+
 i.e. redis.service.consul --> [Docker instance IP]:6379
 
 At the end of the day, traffic all end up at your Redis instance running in Docker on port 6379, the `address_mode` simply changes what Consul returns when you query the SRV record for your service.
