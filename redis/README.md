@@ -22,5 +22,5 @@ i.e. redis.service.consul --> [Docker instance IP]:6379
 
 At the end of the day, traffic all end up at your Redis instance running in Docker on port 6379, the `address_mode` simply changes what Consul returns when you query the SRV record for your service.
 
-## ...might I suggest instead...
-You give [KeyDB](https://keydb.dev/) a try.  It's a drop-in replacement Redis that's written in C++; config file is the same, directory structure is the same (just place `redis` with `keydb`) -- it's identical in every aspect, except faster.  Plus, it's made in Canada.
+## And might I suggest instead...
+...you give [KeyDB](https://keydb.dev/) a try.  It's a drop-in replacement Redis that's written in C++; config file is the same, directory structure is the same (just place `redis` with `keydb`) -- it's identical in every aspect, except faster.  Plus, it's made in Canada.
