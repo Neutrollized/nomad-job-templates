@@ -45,21 +45,18 @@ job "jira" {
                redirectPort="443"
                acceptCount="10"
                secure="true"
-               scheme="http"
-               proxyName=""
-               proxyPort=""
-
-               relaxedPathChars="[]|"
-               relaxedQueryChars="[]|{}^\`&quot;&lt;&gt;"
-               bindOnInit="false"
-               maxHttpHeaderSize="8192"
-               disableUploadTimeout="true" />
 
                URIEncoding="UTF-8"
                protocol="org.apache.coyote.http11.Http11NioProtocol"
                proxyName="${URL}"
                proxyPort="443"
                scheme="https"
+
+               relaxedPathChars="[]|"
+               relaxedQueryChars="[]|{}^\`&quot;&lt;&gt;"
+               bindOnInit="false"
+               maxHttpHeaderSize="8192"
+               disableUploadTimeout="true" />
 
     <Engine name="Catalina"
             defaultHost="localhost">
