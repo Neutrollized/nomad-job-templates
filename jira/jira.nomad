@@ -17,7 +17,7 @@ job "jira" {
         destination = "local"
       }
 
-
+      # https://confluence.atlassian.com/jirakb/integrate-jira-jira-data-center-with-aws-elb-942841242.html
       # https://community.atlassian.com/t5/Jira-Software-discussions/Jira-behind-AWS-ELB-with-SSL-offloading-and-http-https-redirect/td-p/653816
       template {
         destination = "local/server.xml.j2"
@@ -41,22 +41,16 @@ job "jira" {
                minSpareThreads="10"
                connectionTimeout="20000"
                enableLookups="false"
+               maxHttpHeaderSize="8192"
                protocol="HTTP/1.1"
-               redirectPort="443"
-               acceptCount="10"
-               secure="true"
-
-               URIEncoding="UTF-8"
-               protocol="org.apache.coyote.http11.Http11NioProtocol"
+               useBodyEncodingForURI="true"
+               redirectPort="8443"
+               acceptCount="100"
+               disableUploadTimeout="true"
                proxyName="${URL}"
                proxyPort="443"
                scheme="https"
-
-               relaxedPathChars="[]|"
-               relaxedQueryChars="[]|{}^\`&quot;&lt;&gt;"
-               bindOnInit="false"
-               maxHttpHeaderSize="8192"
-               disableUploadTimeout="true" />
+               secure="true"/>
 
     <Engine name="Catalina"
             defaultHost="localhost">
