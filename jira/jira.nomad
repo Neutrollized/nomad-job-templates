@@ -14,6 +14,8 @@ job "jira" {
 
       # https://hub.docker.com/r/atlassian/jira-software
       env {
+        ATL_TOMCAT_PORT="8080"
+        ATL_TOMCAT_REDIRECTPORT="8443"
         ATL_TOMCAT_SECURE="true"
         ATL_TOMCAT_SCHEME="https"
         ATL_PROXY_NAME="${URL}"

@@ -1,12 +1,7 @@
 # README
-
 [Integrate Jira/Jira Data Center with AWS ELB](https://confluence.atlassian.com/jirakb/integrate-jira-jira-data-center-with-aws-elb-942841242.html)
 
 [Putting HTTPS/SSL JIRA behind an AWS ELB](https://nicholasmuldoon.com/2016/05/putting-https-ssl-jira-behind-an-aws-elastic-load-balancer/)
-
-[Running Jira behind an AWS ALB](https://community.atlassian.com/t5/Jira-Software-discussions/Jira-behind-AWS-ELB-with-SSL-offloading-and-http-https-redirect/td-p/653816)
-
-WIP
 
 Default *server.xml.j2*:
 ```
