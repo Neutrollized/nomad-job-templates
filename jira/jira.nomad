@@ -12,78 +12,12 @@ job "jira" {
     task "jira" {
       driver = "docker"
 
-      artifact {
-        source = "https://raw.githubusercontent.com/Neutrollized/nomad-job-templates/master/jira/configs/web.xml"
-        destination = "local"
-      }
-
-      # https://confluence.atlassian.com/jirakb/integrate-jira-jira-data-center-with-aws-elb-942841242.html
-      # https://community.atlassian.com/t5/Jira-Software-discussions/Jira-behind-AWS-ELB-with-SSL-offloading-and-http-https-redirect/td-p/653816
-      template {
-        destination = "local/server.xml.j2"
-        data = <<EOH
-<?xml version="1.0" encoding="utf-8"?>
-
-<Server port="8005"
-        shutdown="SHUTDOWN">
-
-  <Listener className="org.apache.catalina.startup.VersionLoggerListener"/>
-  <Listener className="org.apache.catalina.core.AprLifecycleListener"
-            SSLEngine="on"/>
-  <Listener className="org.apache.catalina.core.JreMemoryLeakPreventionListener"/>
-  <Listener className="org.apache.catalina.mbeans.GlobalResourcesLifecycleListener"/>
-  <Listener className="org.apache.catalina.core.ThreadLocalLeakPreventionListener"/>
-
-  <Service name="Catalina">
-
-    <Connector port="8080"
-               maxThreads="100"
-               minSpareThreads="10"
-               connectionTimeout="20000"
-               enableLookups="false"
-               maxHttpHeaderSize="8192"
-               protocol="HTTP/1.1"
-               useBodyEncodingForURI="true"
-               redirectPort="8443"
-               acceptCount="100"
-               disableUploadTimeout="true"
-               proxyName="${URL}"
-               proxyPort="443"
-               scheme="https"
-               secure="true"/>
-
-    <Engine name="Catalina"
-            defaultHost="localhost">
-
-      <Host name="localhost"
-            appBase="webapps"
-            unpackWARs="true"
-            autoDeploy="true">
-
-        <Context path=""
-                 docBase="${catalina.home}/atlassian-jira"
-                 reloadable="false"
-                 useHttpOnly="true">
-          <Resource name="UserTransaction"
-                    auth="Container"
-                    type="javax.transaction.UserTransaction"
-                    factory="org.objectweb.jotm.UserTransactionFactory"
-                    jotm.timeout="60"/>
-          <Manager pathname=""/>
-          <JarScanner scanManifest="false"/>
-          <Valve className="org.apache.catalina.valves.StuckThreadDetectionValve"
-                 threshold="120" />
-        </Context>
-
-        <Valve className="org.apache.catalina.valves.RemoteIpValve" remoteIpHeader="x-forwarded-for" protocolHeader="x-forwarded-proto" protocolHeaderHttpsValue="https" />
-      </Host>
-      <Valve className="org.apache.catalina.valves.AccessLogValve"
-             pattern="%a %{jira.request.id}r %{jira.request.username}r %t &quot;%m %U%q %H&quot; %s %b %D &quot;%{Referer}i&quot; &quot;%{User-Agent}i&quot; &quot;%{jira.request.assession.id}r&quot;"/>
-    </Engine>
-
-  </Service>
-</Server>
-EOH
+      # https://hub.docker.com/r/atlassian/jira-software
+      env {
+        ATL_TOMCAT_SECURE="true"
+        ATL_TOMCAT_SCHEME="https"
+        ATL_PROXY_NAME="${URL}"
+        ATL_PROXY_PORT="443"
       }
 
       config {
@@ -93,14 +27,8 @@ EOH
           http = 8080
         }
         port_map {
-          https = 443
+          https = 8443
         }
-
-        # https://community.atlassian.com/t5/Jira-questions/How-to-use-a-custom-server-xml-on-Jira-Docker-image/qaq-p/1166929
-        volumes = [
-          "local/server.xml.j2:/opt/atlassian/etc/server.xml.j2",
-          "local/web.xml:/opt/atlassian/jira/atlassian-jira/WEB-INF/web.xml"
-        ]
       }
 
       resources {
