@@ -42,7 +42,7 @@ job "jira" {
 
       service {
         name = "jira"
-        tags = ["jira", "8.5.4", "urlprefix-${URL}"]
+        tags = ["jira", "8.5.4", "urlprefix-${URL}/"]
         port = "http"
         check {
           type     = "tcp"
