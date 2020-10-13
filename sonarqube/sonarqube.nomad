@@ -1,5 +1,5 @@
 job "sonarqube" {
-  datacenters = ["${DC}"]
+  datacenters = ["${DC_NAME}"]
   type = "service"
 
   group "sonarqube" {
