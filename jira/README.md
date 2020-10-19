@@ -3,6 +3,9 @@
 
 [Putting HTTPS/SSL JIRA behind an AWS ELB](https://nicholasmuldoon.com/2016/05/putting-https-ssl-jira-behind-an-aws-elastic-load-balancer/)
 
+## Important!
+- if you're setting up the database, please be sure to set sufficient idle timeout time on your ALB, otherwise you may get a 504 timeout error after a minute (default ALB timeout) -- in my testing, I found that setting it to 180s proved to be sufficient
+
 Default *server.xml.j2*:
 ```
 <?xml version="1.0" encoding="utf-8"?>
