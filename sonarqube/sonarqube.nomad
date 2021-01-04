@@ -9,6 +9,10 @@ job "sonarqube" {
       max_parallel = 1
     }
 
+    network {
+      port "http" { to = 9000 }
+    }
+
     task "sonarqube" {
       driver = "docker"
 
@@ -20,17 +24,12 @@ job "sonarqube" {
       config {
         image = "sonarqube:8.5.0-community"
 
-        port_map {
-          http = 9000
-        }
+        ports = ["http"]
       }
 
       resources {
         cpu = 500
         memory = 4096
-        network {
-          port "http" {}
-        }
       }
 
       service {

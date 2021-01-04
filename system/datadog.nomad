@@ -3,6 +3,10 @@ job "datadog" {
   type = "system"
 
   group "datadog" {
+    network {
+      port "statsd" { static = 8125 }
+    }
+
     task "datadog" {
       driver = "docker"
 
@@ -27,20 +31,12 @@ job "datadog" {
           "/opt/datadog-agent/run:/opt/datadog-agent/run:rw"
         ]
 
-        port_map {
-          statsd = 8125
-        }
+        ports = ["statsd"]
       }
 
       resources {
         cpu    = 150
         memory = 128	#256 for prod
-        network {
-          mbits = 1
-          port "statsd" {
-            static = 8125
-          }
-        }
       }
     }
   }

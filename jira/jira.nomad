@@ -9,6 +9,11 @@ job "jira" {
       max_parallel = 1
     }
 
+    network {
+      port "http" { to = 8080 }
+      port "https" { to = 8443 }
+    }
+
     task "jira" {
       driver = "docker"
 
@@ -25,21 +30,12 @@ job "jira" {
       config {
         image = "atlassian/jira-software:8.5.4"
 
-        port_map {
-          http = 8080
-        }
-        port_map {
-          https = 8443
-        }
+        ports = ["http", "https"]
       }
 
       resources {
         cpu = 500
         memory = 2048
-        network {
-          port "http" {}
-          port "https" {}
-        }
       }
 
       service {

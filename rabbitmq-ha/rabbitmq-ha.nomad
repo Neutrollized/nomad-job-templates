@@ -16,6 +16,13 @@ job "rabbitmq-ha" {
       healthy_deadline = "30s"
     }
 
+    network {
+      port "epmd" { static = 4369 }
+      port "amqp" { static = 5672 }
+      port "ui" { static = 15672 }
+      port "clustering" { static = 25672 }
+    }
+
     task "rabbitmq-ha" {
       driver = "docker"
 
@@ -66,12 +73,7 @@ EOH
         hostname = "${attr.unique.hostname}"
 
         # https://www.rabbitmq.com/clustering.html#ports
-        port_map {
-          epmd = 4369
-          amqp = 5672
-          ui = 15672
-          clustering = 25672
-        }
+        ports = ["epmd", "amqp", "ui", "clustering"]
 
         volumes = [
           "local/enabled_plugins:/etc/rabbitmq/enabled_plugins",
@@ -82,21 +84,6 @@ EOH
       resources {
         cpu = 100
         memory = 256
-        network {
-          mbits = 30
-          port "epmd" {
-            static = 4369
-          }
-          port "amqp" {
-            static = 5672
-          }
-          port "ui" {
-            static = 15672
-          }
-          port "clustering" {
-            static = 25672
-          }
-        }
       }
 
       service {

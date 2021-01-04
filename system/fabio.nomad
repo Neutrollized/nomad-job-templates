@@ -3,6 +3,11 @@ job "fabio" {
   type = "system"
 
   group "fabio" {
+    network {
+      port "ui" { static = 9998 }
+      port "lb" { static = 9999 }
+    }
+
     task "fabio" {
       driver = "docker"
       config {
@@ -14,15 +19,6 @@ job "fabio" {
       resources {
         cpu    = 200
         memory = 128	#256 for prod
-        network {
-          mbits = 20
-          port "lb" {
-            static = 9999
-          }
-          port "ui" {
-            static = 9998
-          }
-        }
       }
     }
   }

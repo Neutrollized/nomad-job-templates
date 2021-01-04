@@ -9,6 +9,10 @@ job "redis" {
       max_parallel = 1
     }
 
+    network {
+      port "db" { to = 6379 }
+    }
+
     task "redis" {
       driver = "docker"
 
@@ -16,18 +20,12 @@ job "redis" {
         # https://hub.docker.com/_/redis
         image = "redis:6.0.4-alpine"
 
-        port_map {
-          db = 6379
-        }
+        ports = ["db"]
       }
 
       resources {
         cpu = 100
         memory = 256
-        network {
-          mbits = 10
-          port "db" {}
-        }
       }
 
       # https://www.nomadproject.io/docs/job-specification/service/#address_mode

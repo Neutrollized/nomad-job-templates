@@ -9,6 +9,10 @@ job "komiser" {
       max_parallel = 1
     }
 
+    network {
+      port "https" { to = 3000 }
+    }
+
     task "komiser" {
       driver = "docker"
 
@@ -22,17 +26,12 @@ job "komiser" {
       config {
         image = "mlabouardy/komiser:2.4.0"
 
-        port_map {
-          https = 3000
-        }
+        ports = ["https"]
       }
 
       resources {
         cpu = 100
         memory = 512
-        network {
-          port "https" {}
-        }
       }
 
       service {
