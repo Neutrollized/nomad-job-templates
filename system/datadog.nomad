@@ -21,8 +21,10 @@ job "datadog" {
 
       config {
         # https://hub.docker.com/r/datadog/agent/tags
-        image = "datadog/agent:7.19.1"
+        image = "datadog/agent:7.25.1"
 
+        # IMPORTANT: requires docker volumes to be enabled in the Nomad client config
+        # https://www.nomadproject.io/docs/drivers/docker#enabled-1
         volumes = [
           "/var/run/docker.sock:/var/run/docker.sock:ro",
           "/proc/:/host/proc/:ro",
