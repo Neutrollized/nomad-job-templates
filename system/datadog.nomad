@@ -21,7 +21,7 @@ job "datadog" {
 
       config {
         # https://hub.docker.com/r/datadog/agent/tags
-        image = "datadog/agent:7.25.1"
+        image = "datadog/agent:7.27"
 
         # IMPORTANT: requires docker volumes to be enabled in the Nomad client config
         # https://www.nomadproject.io/docs/drivers/docker#enabled-1
@@ -39,6 +39,17 @@ job "datadog" {
       resources {
         cpu    = 150
         memory = 128	#256 for prod
+      }
+
+      service {
+        name = "datadog"
+        tags = ["datadog", "7.27"]
+        port = "statsd"
+        check {
+          type     = "tcp"
+          interval = "10s"
+          timeout  = "2s"
+        }
       }
     }
   }
