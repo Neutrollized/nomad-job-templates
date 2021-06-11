@@ -5,6 +5,7 @@ job "traefik" {
   group "traefik" {
     network {
       port "lb" { static = 8080 }
+      port "ui" { static = 8081 }
     }
 
     task "traefik" {
@@ -26,6 +27,12 @@ job "traefik" {
     address = ":8080"
         [entryPoints.http.forwardedHeaders]
         trustedIPs = ["${EXT LB IP1}", "${EXT_LB_IP2}"]
+    [entryPoints.traefik]
+    address = ":8081"
+
+[api]
+    dashboard = true
+    insecure = true
 
 # enable Consul Catalog configuration backend
 [providers.consulCatalog]
@@ -55,7 +62,7 @@ EOF
     service {
       name = "traefik"
       check {
-        port = "lb"
+        port = "ui"
         name = "alive"
         type = "tcp"
         interval = "10s"
